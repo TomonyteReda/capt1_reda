@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+  postit:
+    build: .
+    image: python:myreport
+    container_name: myreport.dev
+    tty: true
+    stdin_open: true
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ./mysite/:/app/
+    depends_on:
+      - db
+    links:
+      - db:postgres
+    command: >
+      bash -c "python wait_for_postgres.py &&
+              python manage.py migrate &&
+              python manage.py collectstatic --noinput &&
+              gunicorn -b 0.0.0.0:8000 mysite.wsgi"
+  db:
+    image: postgres
+    container_name: postgres.myreport
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: myreport
+      POSTGRES_USER: myreport
+      POSTGRES_PASSWORD: nesakysiu
+      POSTGRES_PORT: 5432
+# jei noretume nedet i githuba passwordu vietoj environment (faile apsiraso su "=" pvz POSTGRES_DB= postit :
+#    env_file:
+#      - database.env
+  nginx:
+    build: ./nginx/
+    image: nginx:myreport
+    container_name: myreport.nginx
+    restart: always
+    ports:
+      - 80:80
+    links:
+      - myreport:myreport
+    volumes:
+      - ./mysite/static:/app/static
+      - ./mysite/media:/app/media
