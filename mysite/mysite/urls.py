@@ -18,8 +18,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+
 urlpatterns = [
     path("", include('myreport.urls')),
+    path('user_profile/', include('user_profile.urls')),
     path("admin/", admin.site.urls),
     path("accounts/", include('django.contrib.auth.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('i18n/', include('django.conf.urls.i18n')),
+] + (
+    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)

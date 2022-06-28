@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block content %}
-  <h1>My Reports</h1>
-  <p>In this site you can upload data and generate reports</p>
+  <h1>{% trans "my report"|capfirst %}</h1>
+  <p>{% blocktrans %}Upload data and generate report{% endblocktrans %}</p>
 {% endblock %}

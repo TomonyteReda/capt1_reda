@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  postit:
+  myreport:
     build: .
     image: python:myreport
     container_name: myreport.dev
@@ -47,4 +47,4 @@ services:
       - myreport:myreport
     volumes:
       - ./mysite/static:/app/static
-      - ./mysite/media:/app/media
+      - ./mysite/user_files:/app/user_files

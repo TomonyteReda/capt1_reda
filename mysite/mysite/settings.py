@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +35,8 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", ]
 
 INSTALLED_APPS = [
     'myreport',
+    'user_profile',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -114,6 +118,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = [
+    ('en-us', 'US English'),
+    ('lt', 'Lietuvių'),
+]
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -132,7 +141,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'user_files')
 MEDIA_URL = '/user_files/'
 
+LOGIN_REDIRECT_URL = '/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

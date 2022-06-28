@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block content %}
+
+  {% if form.errors %}
+    <p>{% trans "login error. please try again."|capfirst %}</p>
+  {% endif %}
+  
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>{% trans "you have to login to see the content"|capfirst %}</p>
+    {% endif %}
+  {% endif %}
+  
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>{% trans "user"|capfirst %} </td>
+        <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "password"|capfirst %} </td>
+        <td>{{ form.password }}</td>
+      </tr>
+    </table>
+    <input type="submit" value="Prisijungti" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+  
+  <p><a href="{% url 'password_reset' %}">{% trans "forgot your password?"|capfirst %}</a></p>
+  
+{% endblock %}
