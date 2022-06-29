@@ -7,6 +7,9 @@ class DataFile(models.Model):
     file_contents = models.FileField('file contents', null=True, blank=True, upload_to="user_files")
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.hash_checksum} {self.user}'
+
 
 class Activity(models.Model):
     log_date = models.DateField('date', null=True, blank=True)
@@ -15,5 +18,13 @@ class Activity(models.Model):
     upload_date = models.DateField('upload date', auto_now_add=True)
     data_file = models.ForeignKey('DataFile', on_delete=models.SET_NULL, null=True, verbose_name='file')
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f'uploaded on {self.upload_date}: ' \
+               f'{self.log_date} {self.activity_type} {self.quantity} by user {self.user}'
+
+    class Meta:
+        verbose_name = 'Activity'
+        verbose_name_plural = 'Activities'
 
 

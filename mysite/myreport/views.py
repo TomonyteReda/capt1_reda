@@ -5,7 +5,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
-from . forms import UploadFileForm
+from .forms import UploadFileForm
+from .models import DataFile
+import base64
 
 
 def index(request):
@@ -13,16 +15,25 @@ def index(request):
     return response
 
 
-# def handle_uploaded_file(f):
-
-
 @login_required
 def model_form_upload(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return redirect('index')
+            instance = form.save()
+            instance.file_contents = request.FILES['file_contents']
+            file_name = instance.file_contents.name
+            instance.hash_checksum = base64.b64encode(file_name.encode())
+            instance.user = request.user
+            if (DataFile.objects.filter(user=instance.user).exists()
+                    and DataFile.objects.filter(hash_checksum=instance.hash_checksum).exists()):
+                messages.error(request, f'file {file_name} is already uploaded!')
+            else:
+                instance.save()
+                messages.success(request, f'file {file_name} uploaded successfully!')
+                return render(request, 'upload_file.html', {
+                    'form': form
+                })
     else:
         form = UploadFileForm()
     return render(request, 'upload_file.html', {
@@ -40,18 +51,18 @@ def register(request):
         # validuosim forma, tikrindami ar sutampa slaptažodžiai, ar egzistuoja vartotojas
         error = False
         if not password or password != password2:
-            messages.error(request, _('Slaptažodžiai nesutampa arba neįvesti.'))
+            messages.error(request, _('passwords do not match'))
             error = True
         if not username or get_user_model().objects.filter(username=username).exists():
-            messages.error(request, _('Vartotojas {} jau egzistuoja arba neįvestas.').format(username))
+            messages.error(request, _('user {} already registered').format(username))
             error = True
         if not email or get_user_model().objects.filter(email=email).exists():
-            messages.error(request, _('Vartotojas su el.praštu {} jau egzistuoja arba neįvestas.').format(email))
+            messages.error(request, _('email {} already exists').format(email))
             error = True
         if error:
             return redirect('register')
         else:
             get_user_model().objects.create_user(username=username, email=email, password=password)
-            messages.success(request, _('Vartotojas {} užregistruotas sėkmingai. Galite prisijungti').format(username))
+            messages.success(request, _('user {} registered successfully').format(username))
             return redirect('index')
     return render(request, 'register.html')
