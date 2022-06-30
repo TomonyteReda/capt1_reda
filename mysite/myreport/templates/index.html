@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-  <h1>{% trans "my report"|capfirst %}</h1>
-  <p>{% blocktrans %}Upload data and generate report{% endblocktrans %}</p>
+  <h1>{% trans "my Activity Report"|capfirst %}</h1>
+<p></p>
+<div>
+  <h3>{% blocktrans %}The site where you can upload your activity data and generate reports{% endblocktrans %}</h3>
+  <p>{% blocktrans %}Today we have {{ num_users}} users using our reporting platform.{% endblocktrans %}</p>
+</div>
 {% endblock %}

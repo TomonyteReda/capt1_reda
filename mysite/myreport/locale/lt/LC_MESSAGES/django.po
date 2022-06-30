@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-28 14:40+0300\n"
+"POT-Creation-Date: 2022-06-30 11:39+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,119 +19,146 @@ msgstr ""
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
 
-#: .\templates\base.html:5 .\templates\index.html:4
+#: .\myreport\templates\base.html:5
 msgid "my report"
 msgstr ""
 
-#: .\templates\base.html:23
+#: .\myreport\templates\base.html:23
 msgid "home"
-msgstr ""
+msgstr "pradžia"
 
-#: .\templates\base.html:25
-msgid "upload data"
-msgstr ""
+#: .\myreport\templates\base.html:25
+msgid "upload file"
+msgstr "įkelti duomenų failą"
 
-#: .\templates\base.html:26
-msgid "show report"
-msgstr ""
-
-#: .\templates\base.html:27
+#: .\myreport\templates\base.html:26
 msgid "profile"
-msgstr ""
+msgstr "profilis"
 
-#: .\templates\base.html:28
+#: .\myreport\templates\base.html:27
 msgid "logout"
-msgstr ""
+msgstr "atsijungti"
 
-#: .\templates\base.html:30 .\templates\register.html:28
-#: .\templates\registration\logged_out.html:5
+#: .\myreport\templates\base.html:29 .\myreport\templates\register.html:28
+#: .\myreport\templates\registration\logged_out.html:5
 msgid "login"
-msgstr ""
+msgstr "prisijungti"
 
-#: .\templates\base.html:31
+#: .\myreport\templates\base.html:30
 msgid "sign up"
-msgstr ""
+msgstr "registruotis"
 
-#: .\templates\base.html:34
+#: .\myreport\templates\base.html:33
 msgid "admin"
-msgstr ""
+msgstr "admin"
 
-#: .\templates\index.html:5
-msgid "Upload data and generate report"
-msgstr ""
+#: .\myreport\templates\index.html:4
+msgid "my Activity Report"
+msgstr "mano Įvykių Ataskaita"
 
-#: .\templates\index.html:6
-msgid "we have now"
+#: .\myreport\templates\index.html:5
+msgid "The site where you can upload your activity data and generate reports"
 msgstr ""
+"Šis puslapis jums suteikia galimybę įkelti duomenų failus ir generuoti "
+"ataskaitas"
 
-#: .\templates\register.html:4 .\templates\register.html:26
+#: .\myreport\templates\index.html:6
+#, python-format
+msgid "Today we have %(num_users)s users using our reporting platform."
+msgstr "Šiuo metu turime %(num_users)s užsiregistravusius vartotojus."
+
+#: .\myreport\templates\register.html:4 .\myreport\templates\register.html:26
 msgid "register"
-msgstr ""
+msgstr "registruotis"
 
-#: .\templates\register.html:8
+#: .\myreport\templates\register.html:8
 msgid "user name"
-msgstr ""
+msgstr "vartotojo vardas"
 
-#: .\templates\register.html:10
+#: .\myreport\templates\register.html:10
 msgid "up to 150 symbols"
-msgstr ""
+msgstr "iki 150 simbolių"
 
-#: .\templates\register.html:13
+#: .\myreport\templates\register.html:13
 msgid "email"
-msgstr ""
+msgstr "el. paštas"
 
-#: .\templates\register.html:15
+#: .\myreport\templates\register.html:15
 msgid "your email will not be shared"
-msgstr ""
+msgstr "jūsų el. paštu nesidalinsime"
 
-#: .\templates\register.html:18 .\templates\registration\login.html:23
+#: .\myreport\templates\register.html:18
+#: .\myreport\templates\registration\login.html:23
 msgid "password"
-msgstr ""
+msgstr "slaptažodis"
 
-#: .\templates\register.html:20
+#: .\myreport\templates\register.html:20
 msgid "not less than 8 symbols"
-msgstr ""
+msgstr "ne mažiau 8 simbolių"
 
-#: .\templates\register.html:23
+#: .\myreport\templates\register.html:23
 msgid "repeat password"
-msgstr ""
+msgstr "pakartoti slaptažodį"
 
-#: .\templates\register.html:28
+#: .\myreport\templates\register.html:28
 msgid "if you are already registered"
-msgstr ""
+msgstr "jei jūs jau prisiregistravęs"
 
-#: .\templates\registration\logged_out.html:4
+#: .\myreport\templates\registration\logged_out.html:4
 msgid "you are logged out"
-msgstr ""
+msgstr "jūs atsijungėte"
 
-#: .\templates\registration\login.html:6
+#: .\myreport\templates\registration\login.html:6
 msgid "login error. please try again."
-msgstr ""
+msgstr "prisijungimo klaida. bandykite dar kartą."
 
-#: .\templates\registration\login.html:11
+#: .\myreport\templates\registration\login.html:11
 msgid "you have to login to see the content"
-msgstr ""
+msgstr "jei norite matyti šį turinį, jūs turite prisijungti"
 
-#: .\templates\registration\login.html:19
+#: .\myreport\templates\registration\login.html:19
 msgid "user"
-msgstr ""
+msgstr "vartotojas"
 
-#: .\templates\registration\login.html:31
+#: .\myreport\templates\registration\login.html:31
 msgid "forgot your password?"
-msgstr ""
+msgstr "pamiršote slaptažodį?"
 
-#: .\views.py:23
-msgid "Slaptažodžiai nesutampa arba neįvesti."
-msgstr ""
+#: .\myreport\templates\upload_file.html:4
+#, python-format
+msgid "Upload file for user %(user)s"
+msgstr "įkelti vartotojo %(user)s failą"
 
-#: .\views.py:26
-msgid "Vartotojas {} jau egzistuoja arba neįvestas."
-msgstr ""
+#: .\myreport\templates\upload_file.html:9
+msgid "upload"
+msgstr "įkelti"
 
-#: .\views.py:29
-msgid "Vartotojas su el.praštu {} jau egzistuoja arba neįvestas."
-msgstr ""
+#: .\myreport\templates\upload_file.html:12
+msgid "return to home page"
+msgstr "grįžti į pagrindinį puslapį"
 
-#: .\views.py:35
-msgid "Vartotojas {} užregistruotas sėkmingai. Galite prisijungti"
-msgstr ""
+#: .\myreport\views.py:34
+#, python-brace-format
+msgid "file {file_name} is already uploaded"
+msgstr "failas {file_name} yra jau įkeltas"
+
+#: .\myreport\views.py:37
+#, python-brace-format
+msgid "file {file_name} uploaded successfully!"
+msgstr "failas {file_name} įkeltas sėkmingai!"
+
+#: .\myreport\views.py:58
+msgid "passwords do not match"
+msgstr "slaptažodis nesutampa"
+
+#: .\myreport\views.py:61
+msgid "user {} already registered"
+msgstr "vartotojas {} jau užregistruotas"
+
+#: .\myreport\views.py:64
+msgid "email {} already exists"
+msgstr "vartotojas šiuo el. paštu {} jau užregistruotas"
+
+#: .\myreport\views.py:70
+msgid "user {} registered successfully"
+msgstr "vartotojas {} užregistruotas sėkmingai"

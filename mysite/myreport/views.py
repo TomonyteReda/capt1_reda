@@ -11,7 +11,11 @@ import base64
 
 
 def index(request):
-    response = render(request, 'index.html')
+    num_users = get_user_model().objects.all().count()
+    context = {
+        'num_users': num_users,
+    }
+    response = render(request, 'index.html', context=context)
     return response
 
 
@@ -27,10 +31,10 @@ def model_form_upload(request):
             instance.user = request.user
             if (DataFile.objects.filter(user=instance.user).exists()
                     and DataFile.objects.filter(hash_checksum=instance.hash_checksum).exists()):
-                messages.error(request, f'file {file_name} is already uploaded!')
+                messages.error(request, _('file {file_name} is already uploaded').format(file_name))
             else:
                 instance.save()
-                messages.success(request, f'file {file_name} uploaded successfully!')
+                messages.success(request, _('file {file_name} uploaded successfully!').format(file_name))
                 return render(request, 'upload_file.html', {
                     'form': form
                 })

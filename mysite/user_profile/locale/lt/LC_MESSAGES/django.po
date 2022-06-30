@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-28 14:41+0300\n"
+"POT-Creation-Date: 2022-06-30 11:39+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,31 +19,31 @@ msgstr ""
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
 
-#: .\models.py:16
+#: .\user_profile\models.py:16
 msgid "user"
-msgstr ""
+msgstr "vartotojas"
 
-#: .\models.py:21
+#: .\user_profile\models.py:21
 msgid "picture"
-msgstr ""
+msgstr "nuotrauka"
 
-#: .\models.py:38
+#: .\user_profile\models.py:38
 msgid "user profile"
-msgstr ""
+msgstr "vartotojo profilis"
 
-#: .\models.py:39
+#: .\user_profile\models.py:39
 msgid "user profiles"
-msgstr ""
+msgstr "vartotojo profiliai"
 
-#: .\templates\user_profile\profile.html:13
+#: .\user_profile\templates\user_profile\profile.html:13
 msgid "update Profile"
-msgstr ""
+msgstr "atnaujinti Profilį"
 
-#: .\templates\user_profile\profile_update.html:5
+#: .\user_profile\templates\user_profile\profile_update.html:5
 #, python-format
 msgid "Updating Profile of %(user)s"
-msgstr ""
+msgstr "Atnaujinamas vartotojo %(user)s profilis"
 
-#: .\templates\user_profile\profile_update.html:11
+#: .\user_profile\templates\user_profile\profile_update.html:11
 msgid "update"
-msgstr ""
+msgstr "atnaujinti"
