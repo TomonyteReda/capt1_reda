@@ -6,8 +6,9 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from .forms import UploadFileForm
-from .models import DataFile
+from .models import DataFile, Activity
 import base64
+from .process_data import add_data_from_file_to_db
 
 
 def index(request):
@@ -24,17 +25,23 @@ def model_form_upload(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = form.save()
+            instance = form.instance
             instance.file_contents = request.FILES['file_contents']
             file_name = instance.file_contents.name
             instance.hash_checksum = base64.b64encode(file_name.encode())
             instance.user = request.user
-            if (DataFile.objects.filter(user=instance.user).exists()
-                    and DataFile.objects.filter(hash_checksum=instance.hash_checksum).exists()):
-                messages.error(request, _('file {file_name} is already uploaded').format(file_name))
+            if DataFile.objects.filter(user=instance.user, hash_checksum=instance.hash_checksum).count() >= 1:
+                messages.error(request, _('file {} is already uploaded').format(file_name))
+                return render(request, 'upload_file.html', {
+                    'form': form
+                })
             else:
                 instance.save()
-                messages.success(request, _('file {file_name} uploaded successfully!').format(file_name))
+                add_data_from_file_to_db(file_contents=instance.file_contents,
+                                         file_name=file_name,
+                                         user=instance.user,
+                                         instance=instance)
+                messages.success(request, _('file {} uploaded successfully!').format(file_name))
                 return render(request, 'upload_file.html', {
                     'form': form
                 })

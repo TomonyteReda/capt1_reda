@@ -16,7 +16,7 @@ class Activity(models.Model):
     activity_type = models.CharField('activity type', max_length=50, null=True, blank=True)
     quantity = models.IntegerField('quantity', default=0)
     upload_date = models.DateField('upload date', auto_now_add=True)
-    data_file = models.ForeignKey('DataFile', on_delete=models.SET_NULL, null=True, verbose_name='file')
+    data_file = models.ForeignKey('DataFile', on_delete=models.CASCADE, null=True, verbose_name='file')
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
