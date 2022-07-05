@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
@@ -9,6 +10,9 @@ from .forms import UploadFileForm
 from .models import DataFile, Activity
 import base64
 from .process_data import add_data_from_file_to_db
+from django.db.models import Sum
+import pandas as pd
+import numpy as np
 
 
 def index(request):
@@ -50,6 +54,17 @@ def model_form_upload(request):
     return render(request, 'upload_file.html', {
         'form': form
     })
+
+
+@login_required
+def model_report(request):
+    data = Activity.objects.filter(user=request.user).values('log_date', 'activity_type', 'quantity', 'upload_date')
+    pivot = pd.pivot_table(data, values=['quantity'], index=['log_date', 'upload_date'],
+                           columns=['activity_type'], aggfunc=np.sum, fill_value=0)
+    context = {
+        'Report': pivot.to_html,
+               }
+    return render(request, 'user_activity_report.html', context)
 
 
 @csrf_protect
