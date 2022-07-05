@@ -12,7 +12,7 @@ class DataFile(models.Model):
 
 
 class Activity(models.Model):
-    log_date = models.DateField('date', null=True, blank=True)
+    log_date = models.DateTimeField('date', null=True, blank=True)
     activity_type = models.CharField('activity type', max_length=50, null=True, blank=True)
     quantity = models.IntegerField('quantity', default=0)
     upload_date = models.DateField('upload date', auto_now_add=True)

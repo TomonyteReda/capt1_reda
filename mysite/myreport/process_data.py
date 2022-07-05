@@ -35,7 +35,7 @@ def get_activity_type_from_file_name(file_name_elements):
 
 
 def add_data_instance_to_dict(data, df, log_date, activity_type):
-    data['log_date'] = log_date.strftime('%Y-%m-%d')
+    data['log_date'] = log_date.strftime('%Y-%m-%d %H:%M')
     data['activity_type'] = activity_type
     data['quantity'] = len(df)
     return data
@@ -55,6 +55,7 @@ def add_data_from_file_to_db(file_contents, file_name, user, instance):
     data = put_data_from_raw_files_to_dict(file_contents, file_name)
     activity = Activity()
     activity.log_date = data['log_date']
+    activity.activity_type = data['activity_type']
     activity.quantity = data['quantity']
     activity.data_file = instance
     activity.user = user
