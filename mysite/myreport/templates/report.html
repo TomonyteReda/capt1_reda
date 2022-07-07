@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+  <h1>{% trans "my Activity Report"|capfirst %}</h1>
+<p></p>
+<div>
+    {% if report %}
+    <div class="row">
+      <table>
+          <th>Log Date</th>
+          <th>Impressions</th>
+          <th>Clicks</th>
+          <th>Upload Date</th>
+          {% for line in report %}
+          <tr>
+              <td>{{ line.log_date }}</td>
+              <td>{{ line.impressions }}</td>
+              <td>{{ line.clicks }}</td>
+              <td>{{ line.upload_date }}</td>
+          </tr>
+                {% endfor %}
+      </table>
+    </div>
+    {% else %}
+      <p>{% blocktrans %}No data to show{% endblocktrans %}</p>
+    {% endif %}
+</div>
+{% endblock %}

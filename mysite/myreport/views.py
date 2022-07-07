@@ -11,8 +11,6 @@ from .models import DataFile, Activity
 import base64
 from .process_data import add_data_from_file_to_db
 from django.db.models import Sum
-import pandas as pd
-import numpy as np
 
 
 def index(request):
@@ -58,13 +56,14 @@ def model_form_upload(request):
 
 @login_required
 def model_report(request):
-    data = Activity.objects.filter(user=request.user).values('log_date', 'activity_type', 'quantity', 'upload_date')
-    pivot = pd.pivot_table(data, values=['quantity'], index=['log_date', 'upload_date'],
-                           columns=['activity_type'], aggfunc=np.sum, fill_value=0)
+    query_set = Activity.objects.filter(user=request.user)
+    result = query_set.values('log_date', 'upload_date')\
+        .order_by('log_date')\
+        .annotate(impressions=Sum('quantity_impressions'), clicks=Sum('quantity_clicks'))
     context = {
-        'Report': pivot.to_html,
-               }
-    return render(request, 'user_activity_report.html', context)
+        'report': result
+    }
+    return render(request, 'report.html', context=context)
 
 
 @csrf_protect

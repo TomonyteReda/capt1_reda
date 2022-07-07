@@ -13,50 +13,34 @@ def get_elements_from_file_name(file):
     return file_name_elements
 
 
-def convert_string_to_date(date_element):
+def convert_string_to_date(file_name_elements):
+    date_element = file_name_elements[3][:12]
     year = int(date_element[:4])
     month = int(date_element[4:6])
     day = int(date_element[6:8])
     minutes = int(date_element[8:10])
-    seconds = int(date_element[-2:])
-    log_date_values = datetime(year, month, day, minutes, seconds)
-    return log_date_values
-
-
-def get_date_time_value(file_name_elements):
-    date_element = file_name_elements[3][:12]
-    log_date = convert_string_to_date(date_element)
+    log_date_values = datetime(year, month, day, minutes)
+    log_date = log_date_values.strftime('%Y-%m-%d %H:%M')
     return log_date
 
 
-def get_activity_type_from_file_name(file_name_elements):
+def save_activity_count_by_type(file_name_elements, activity, df):
     activity_type = file_name_elements[0]
-    return activity_type
-
-
-def add_data_instance_to_dict(data, df, log_date, activity_type):
-    data['log_date'] = log_date.strftime('%Y-%m-%d %H:%M')
-    data['activity_type'] = activity_type
-    data['quantity'] = len(df)
-    return data
-
-
-def put_data_from_raw_files_to_dict(file_contents, file_name):
-    data = {}
-    df = pd.read_parquet(file_contents, engine='pyarrow')
-    file_name_elements = get_elements_from_file_name(file_name)
-    log_date = get_date_time_value(file_name_elements)
-    activity_type = get_activity_type_from_file_name(file_name_elements)
-    data = add_data_instance_to_dict(data, df, log_date, activity_type)
-    return data
+    if activity_type == 'impressions':
+        activity.quantity_impressions = len(df)
+    elif activity_type == 'clicks':
+        activity.quantity_clicks = len(df)
+    else:
+        activity.quantity_impressions = 0
+        activity.quantity_clicks = 0
 
 
 def add_data_from_file_to_db(file_contents, file_name, user, instance):
-    data = put_data_from_raw_files_to_dict(file_contents, file_name)
+    df = pd.read_parquet(file_contents, engine='pyarrow')
+    file_name_elements = get_elements_from_file_name(file_name)
     activity = Activity()
-    activity.log_date = data['log_date']
-    activity.activity_type = data['activity_type']
-    activity.quantity = data['quantity']
+    save_activity_count_by_type(file_name_elements, activity, df)
+    activity.log_date = convert_string_to_date(file_name_elements)
     activity.data_file = instance
     activity.user = user
     activity.save()

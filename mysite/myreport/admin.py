@@ -3,7 +3,7 @@ from .models import Activity, DataFile
 
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ('log_date', 'activity_type', 'quantity', 'upload_date', 'user')
+    list_display = ('log_date', 'quantity_impressions', 'quantity_clicks', 'upload_date', 'user')
 
 
 admin.site.register(DataFile)
