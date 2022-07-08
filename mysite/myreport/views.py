@@ -60,8 +60,12 @@ def model_report(request):
     result = query_set.values('log_date', 'upload_date')\
         .order_by('log_date')\
         .annotate(impressions=Sum('quantity_impressions'), clicks=Sum('quantity_clicks'))
+    total_impressions = query_set.aggregate(Sum('quantity_impressions'))['quantity_impressions__sum']
+    total_clicks = query_set.aggregate(Sum('quantity_clicks'))['quantity_clicks__sum']
     context = {
-        'report': result
+        'report': result,
+        'total_impressions': total_impressions,
+        'total_clicks': total_clicks
     }
     return render(request, 'report.html', context=context)
 
