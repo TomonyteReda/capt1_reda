@@ -11,6 +11,7 @@ from .models import DataFile, Activity
 import base64
 from .process_data import add_data_from_file_to_db
 from django.db.models import Sum
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
@@ -62,6 +63,14 @@ def model_report(request):
         .annotate(impressions=Sum('quantity_impressions'), clicks=Sum('quantity_clicks'))
     total_impressions = query_set.aggregate(Sum('quantity_impressions'))['quantity_impressions__sum']
     total_clicks = query_set.aggregate(Sum('quantity_clicks'))['quantity_clicks__sum']
+    page = request.GET.get('page')
+    paginator = Paginator(result, 50)
+    try:
+        result = paginator.page(page)
+    except PageNotAnInteger:
+        result = paginator.page(1)
+    except EmptyPage:
+        result = paginator.page(paginator.num_pages)
     context = {
         'report': result,
         'total_impressions': total_impressions,
@@ -77,7 +86,6 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
-        # validuosim forma, tikrindami ar sutampa slaptažodžiai, ar egzistuoja vartotojas
         error = False
         if not password or password != password2:
             messages.error(request, _('passwords do not match'))

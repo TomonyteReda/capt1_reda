@@ -26,11 +26,29 @@
               <td>{{ line.clicks }}</td>
               <td>{{ line.upload_date }}</td>
           </tr>
-                {% endfor %}
+          {% endfor %}
       </table>
+        <div class="container pages">
+            <nav aria-label="...">
+                {% if report.has_other_pages %}
+                <ul class="pagination pagination-sm justify-content-end">
+                    {% for i in report.paginator.page_range %}
+                    {% if report.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link href">{{ i }}</a></li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </nav>
+        </div>
     </div>
     {% else %}
-      <p>{% blocktrans %}No data to show{% endblocktrans %}</p>
+      <p>{% blocktrans %}There is no data to show{% endblocktrans %}</p>
     {% endif %}
 </div>
 {% endblock %}
