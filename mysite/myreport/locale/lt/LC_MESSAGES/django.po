@@ -152,12 +152,12 @@ msgstr "grįžti į pagrindinį puslapį"
 #: .\myreport\views.py:37
 #| msgid "file {file_name} is already uploaded"
 msgid "file {} is already uploaded"
-msgstr "failas {file_name} yra jau įkeltas"
+msgstr "failas {} yra jau įkeltas"
 
 #: .\myreport\views.py:47
 #| msgid "file {file_name} uploaded successfully!"
 msgid "file {} uploaded successfully!"
-msgstr "failas {file_name} įkeltas sėkmingai!"
+msgstr "failas {} įkeltas sėkmingai!"
 
 #: .\myreport\views.py:91
 msgid "passwords do not match"

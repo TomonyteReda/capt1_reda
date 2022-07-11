@@ -23,6 +23,12 @@ def index(request):
     return response
 
 
+def encode_file_name(file_name):
+    file_name_for_enc = '.'.join(str(file_name).split('.')[:-1])
+    hash_checksum = base64.b64encode(file_name_for_enc.encode())
+    return hash_checksum
+
+
 @login_required
 def model_form_upload(request):
     if request.method == 'POST':
@@ -30,11 +36,11 @@ def model_form_upload(request):
         if form.is_valid():
             instance = form.instance
             instance.file_contents = request.FILES['file_contents']
-            file_name = instance.file_contents.name
-            instance.hash_checksum = base64.b64encode(file_name.encode())
+            file_name = str(instance.file_contents.name)
+            instance.hash_checksum = encode_file_name(file_name)
             instance.user = request.user
             if DataFile.objects.filter(user=instance.user, hash_checksum=instance.hash_checksum).count() >= 1:
-                messages.error(request, _('file {} is already uploaded').format(file_name))
+                messages.error(request, _('file {} is already uploaded').format(str(file_name)))
                 return render(request, 'upload_file.html', {
                     'form': form
                 })
@@ -44,7 +50,7 @@ def model_form_upload(request):
                                          file_name=file_name,
                                          user=instance.user,
                                          instance=instance)
-                messages.success(request, _('file {} uploaded successfully!').format(file_name))
+                messages.success(request, _('file {} uploaded successfully!').format(str(file_name)))
                 return render(request, 'upload_file.html', {
                     'form': form
                 })
