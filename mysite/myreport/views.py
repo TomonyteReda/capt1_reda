@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UploadFileForm
 from .models import DataFile, Activity
 import base64
-from .process_data import add_data_from_file_to_db
+from .process_data import add_data_from_file_to_db, read_file_as_df
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -36,21 +36,28 @@ def model_form_upload(request):
         if form.is_valid():
             instance = form.instance
             instance.file_contents = request.FILES['file_contents']
-            file_name = str(instance.file_contents.name)
+            file_name = instance.file_contents.name
             instance.hash_checksum = encode_file_name(file_name)
             instance.user = request.user
-            if DataFile.objects.filter(user=instance.user, hash_checksum=instance.hash_checksum).count() >= 1:
-                messages.error(request, _('file {} is already uploaded').format(str(file_name)))
+            df = read_file_as_df(file_name=file_name, file_contents=instance.file_contents)
+            if df == 'None':
+                messages.error(request, _('Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported')
+                               .format(str(file_name)))
+                return render(request, 'upload_file.html', {
+                    'form': form
+                })
+            elif DataFile.objects.filter(user=instance.user, hash_checksum=instance.hash_checksum).count() >= 1:
+                messages.error(request, _('File {} is already uploaded').format(str(file_name)))
                 return render(request, 'upload_file.html', {
                     'form': form
                 })
             else:
                 instance.save()
-                add_data_from_file_to_db(file_contents=instance.file_contents,
+                add_data_from_file_to_db(df=df,
                                          file_name=file_name,
                                          user=instance.user,
                                          instance=instance)
-                messages.success(request, _('file {} uploaded successfully!').format(str(file_name)))
+                messages.success(request, _('File {} uploaded successfully!').format(str(file_name)))
                 return render(request, 'upload_file.html', {
                     'form': form
                 })

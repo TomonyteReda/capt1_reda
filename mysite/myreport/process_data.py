@@ -1,6 +1,9 @@
 from datetime import datetime, date
 import pandas as pd
 from .models import Activity
+from django.contrib import messages
+from django.shortcuts import render
+from django.utils.translation import gettext_lazy as _
 
 
 upload_date = date.today()
@@ -35,20 +38,21 @@ def save_activity_count_by_type(file_name_elements, activity, df):
         activity.quantity_clicks = 0
 
 
-def read_file_as_df(file_name_elements, file_contents):
-    file_extension = file_name_elements[-1].split('.')[-1]
+def read_file_as_df(file_name, file_contents):
+    file_extension = str(file_name).split('.')[-1]
     if file_extension == 'parquet':
         df = pd.read_parquet(file_contents, engine='pyarrow')
     elif file_extension == 'xlsx':
         df = pd.read_excel(file_contents, engine='openpyxl')
     elif file_extension == 'csv':
         df = pd.read_csv(file_contents)
+    else:
+        df = 'None'
     return df
 
 
-def add_data_from_file_to_db(file_contents, file_name, user, instance):
+def add_data_from_file_to_db(df, file_name, user, instance):
     file_name_elements = get_elements_from_file_name(file_name)
-    df = read_file_as_df(file_name_elements, file_contents)
     activity = Activity()
     save_activity_count_by_type(file_name_elements, activity, df)
     activity.log_date = convert_string_to_date(file_name_elements)

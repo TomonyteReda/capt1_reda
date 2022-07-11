@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-11 18:48+0300\n"
+"POT-Creation-Date: 2022-07-11 20:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,28 +149,34 @@ msgstr "įkelti"
 msgid "return to home page"
 msgstr "grįžti į pagrindinį puslapį"
 
-#: .\myreport\views.py:37
-#| msgid "file {file_name} is already uploaded"
-msgid "file {} is already uploaded"
+#: .\myreport\views.py:44
+#| msgid "Files accepted ony in *.parquet, *.csv, *.xlsx formats"
+msgid ""
+"Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported"
+msgstr "Neteisingas failo formatas. Failai priimami tik *.parquet, *.csv, *.xlsx formatais"
+
+#: .\myreport\views.py:50
+#| msgid "file {} is already uploaded"
+msgid "File {} is already uploaded"
 msgstr "failas {} yra jau įkeltas"
 
-#: .\myreport\views.py:47
-#| msgid "file {file_name} uploaded successfully!"
-msgid "file {} uploaded successfully!"
+#: .\myreport\views.py:60
+#| msgid "file {} uploaded successfully!"
+msgid "File {} uploaded successfully!"
 msgstr "failas {} įkeltas sėkmingai!"
 
-#: .\myreport\views.py:91
+#: .\myreport\views.py:104
 msgid "passwords do not match"
 msgstr "slaptažodis nesutampa"
 
-#: .\myreport\views.py:94
+#: .\myreport\views.py:107
 msgid "user {} already registered"
 msgstr "vartotojas {} jau užregistruotas"
 
-#: .\myreport\views.py:97
+#: .\myreport\views.py:110
 msgid "email {} already exists"
 msgstr "vartotojas šiuo el. paštu {} jau užregistruotas"
 
-#: .\myreport\views.py:103
+#: .\myreport\views.py:116
 msgid "user {} registered successfully"
 msgstr "vartotojas {} užregistruotas sėkmingai"
