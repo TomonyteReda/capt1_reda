@@ -8,8 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from .forms import UploadFileForm
 from .models import DataFile, Activity
-import base64
-from .process_data import add_data_from_file_to_db, read_file_as_df
+from .utils import hash_file, check_for_upload_form_error, process_load_data
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -23,12 +22,6 @@ def index(request):
     return response
 
 
-def encode_file_name(file_name):
-    file_name_for_enc = '.'.join(str(file_name).split('.')[:-1])
-    hash_checksum = base64.b64encode(file_name_for_enc.encode())
-    return hash_checksum
-
-
 @login_required
 def model_form_upload(request):
     if request.method == 'POST':
@@ -37,30 +30,20 @@ def model_form_upload(request):
             instance = form.instance
             instance.file_contents = request.FILES['file_contents']
             file_name = instance.file_contents.name
-            instance.hash_checksum = encode_file_name(file_name)
+            instance.hash_checksum = hash_file(instance.file_contents)
             instance.user = request.user
-            df = read_file_as_df(file_name=file_name, file_contents=instance.file_contents)
-            if df == 'None':
-                messages.error(request, _('Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported')
-                               .format(str(file_name)))
-                return render(request, 'upload_file.html', {
-                    'form': form
-                })
-            elif DataFile.objects.filter(user=instance.user, hash_checksum=instance.hash_checksum).count() >= 1:
-                messages.error(request, _('File {} is already uploaded').format(str(file_name)))
+            file_extension = str(file_name).split('.')[-1]
+            status = check_for_upload_form_error(request, form, instance, file_name, file_extension)
+            if status == 'error':
                 return render(request, 'upload_file.html', {
                     'form': form
                 })
             else:
                 instance.save()
-                add_data_from_file_to_db(df=df,
-                                         file_name=file_name,
-                                         user=instance.user,
-                                         instance=instance)
-                messages.success(request, _('File {} uploaded successfully!').format(str(file_name)))
-                return render(request, 'upload_file.html', {
-                    'form': form
-                })
+                process_load_data(request, instance, file_name, file_extension)
+        return render(request, 'upload_file.html', {
+            'form': form
+        })
     else:
         form = UploadFileForm()
     return render(request, 'upload_file.html', {

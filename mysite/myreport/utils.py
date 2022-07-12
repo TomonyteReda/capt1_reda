@@ -1,10 +1,12 @@
+from functools import partial
+import hashlib
+from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
+from django.shortcuts import render
+from .models import DataFile
 from datetime import datetime, date
 import pandas as pd
 from .models import Activity
-from django.contrib import messages
-from django.shortcuts import render
-from django.utils.translation import gettext_lazy as _
-
 
 upload_date = date.today()
 upload_date_str = str(upload_date)
@@ -38,16 +40,13 @@ def save_activity_count_by_type(file_name_elements, activity, df):
         activity.quantity_clicks = 0
 
 
-def read_file_as_df(file_name, file_contents):
-    file_extension = str(file_name).split('.')[-1]
+def read_file_as_df(file_extension, file_contents):
     if file_extension == 'parquet':
         df = pd.read_parquet(file_contents, engine='pyarrow')
     elif file_extension == 'xlsx':
         df = pd.read_excel(file_contents, engine='openpyxl')
     elif file_extension == 'csv':
         df = pd.read_csv(file_contents)
-    else:
-        df = 'None'
     return df
 
 
@@ -59,5 +58,36 @@ def add_data_from_file_to_db(df, file_name, user, instance):
     activity.data_file = instance
     activity.user = user
     activity.save()
+
+
+def process_load_data(request, instance, file_name, file_extension):
+    df = read_file_as_df(file_extension=file_extension, file_contents=instance.file_contents)
+    add_data_from_file_to_db(df=df, file_name=file_name, user=instance.user,
+                             instance=instance)
+    messages.success(request, _('File {} uploaded successfully!').format(str(file_name)))
+
+
+def hash_file(file, block_size=65536):
+    hasher = hashlib.md5()
+    for buf in iter(partial(file.read, block_size), b''):
+        hasher.update(buf)
+    return hasher.hexdigest()
+
+
+def check_for_upload_form_error(request, form, instance, file_name, file_extension):
+    if file_extension not in ['parquet', 'csv', 'xlsx']:
+        messages.error(request, _('Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported')
+                       .format(str(file_name)))
+        status = 'error'
+    elif DataFile.objects.filter(user=instance.user, hash_checksum=instance.hash_checksum).count() >= 1:
+        messages.error(request, _('File {} is already uploaded').format(str(file_name)))
+        status = 'error'
+    else:
+        status = 'correct'
+    return status
+
+
+
+
 
 
