@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect
@@ -54,7 +55,7 @@ def model_form_upload(request):
 @login_required
 def model_report(request):
     query_set = Activity.objects.filter(user=request.user)
-    result = query_set.values('log_date', 'upload_date')\
+    result = query_set.values('log_date', 'data_file__upload_date')\
         .order_by('log_date')\
         .annotate(impressions=Sum('quantity_impressions'), clicks=Sum('quantity_clicks'))
     total_impressions = query_set.aggregate(Sum('quantity_impressions'))['quantity_impressions__sum']
@@ -73,6 +74,16 @@ def model_report(request):
         'total_clicks': total_clicks
     }
     return render(request, 'report.html', context=context)
+
+
+class UploadedFilesByUserListView(LoginRequiredMixin, generic.ListView):
+    model = DataFile
+    context_object_name = 'files'
+    template_name = 'user_files.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return DataFile.objects.filter(user=self.request.user)
 
 
 @csrf_protect

@@ -24,6 +24,7 @@
             {% if user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="{% url 'upload' %}">{% trans "upload file"|capfirst %}</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'report' %}">{% trans "show report"|capfirst %}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'my-files' %}">{% trans "my files"|capfirst %}</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'my-profile' %}">{% trans "profile"|capfirst %}</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={% url 'index' %}">{% trans "logout"|capfirst %}</a></li>
             {% else %}

@@ -3,9 +3,13 @@ from .models import Activity, DataFile
 
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ('log_date', 'quantity_impressions', 'quantity_clicks', 'upload_date', 'user')
+    list_display = ('log_date', 'quantity_impressions', 'quantity_clicks', 'user')
 
 
-admin.site.register(DataFile)
+class DataFileAdmin(admin.ModelAdmin):
+    list_display = ('hash_checksum', 'file_contents', 'user', 'upload_date')
+
+
+admin.site.register(DataFile, DataFileAdmin)
 admin.site.register(Activity, ActivityAdmin)
 

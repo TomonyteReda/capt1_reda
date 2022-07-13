@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}{% load static i18n crispy_forms_tags %}
+<div>
+    <h1>{% blocktrans %}Files uploaded by user {{ user }}{% endblocktrans %}</h1>
+</div>
+<br>
+    {% if files %}
+        <div class="row">
+      <table class="table table-hover table-bordered">
+          <tr>
+              <th>File</th>
+              <th>Upload Date</th>
+          </tr>
+          {% for file in files %}
+          <tr>
+              <td>{{ file.file_contents.name }}</td>
+              <td>{{ file.upload_date }}</td>
+          </tr>
+          {% endfor %}
+      </table>
+        </div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; pirmas</a>
+            <a href="?page={{ page_obj.previous_page_number }}">back</a>
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }} iš {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    {% else %}
+      <p>{% blocktrans %}No files are uploaded for user {{ user }}{% endblocktrans %}</p>
+    {% endif %}       
+{% endblock %}
