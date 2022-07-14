@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<br>
+<div class="container">
+    <h2>{% trans "delete file"|capfirst %}:</h2>
+    <p><strong>{{ object.file_contents.name }}</strong></p>
+    <form method="post" action="">
+        {% trans "do you really want to delete this file?"|capfirst %}
+        {% csrf_token %}
+        <div class="form-group">
+            <br>
+            <button class="btn btn-danger">{% trans "delete"|capfirst %}</button>
+            <a class="btn btn-secondary" href="{% url 'my-files' %}">{% trans "keep the file"|capfirst %}</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

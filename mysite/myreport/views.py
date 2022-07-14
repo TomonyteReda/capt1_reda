@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
@@ -12,6 +12,7 @@ from .models import DataFile, Activity
 from .utils import hash_file, check_for_upload_form_error, process_load_data
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse_lazy
 
 
 def index(request):
@@ -80,10 +81,28 @@ class UploadedFilesByUserListView(LoginRequiredMixin, generic.ListView):
     model = DataFile
     context_object_name = 'files'
     template_name = 'user_files.html'
-    paginate_by = 5
+    paginate_by = 50
 
     def get_queryset(self):
         return DataFile.objects.filter(user=self.request.user)
+
+
+class UserFileDetailView(LoginRequiredMixin, generic.DetailView):
+    model = DataFile
+    template_name = 'user_file.html'
+
+
+class UserFileDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = DataFile
+    success_url = reverse_lazy('my-files')
+    template_name = 'user_file_delete.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, f'{_("file deleted successfully").capitalize()}')
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
 
 
 @csrf_protect

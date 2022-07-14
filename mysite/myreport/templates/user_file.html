@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}{% load static i18n %}
+<br>
+<div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p><strong>{% trans "file"|capfirst %}:</strong> {{ object.file_contents.name }}</p>
+            <p><strong>{% trans "uploaded by"|capfirst %}:</strong> {{object.user}}</p>
+            <p><strong>{% trans "upload date"|capfirst %}:</strong> {{object.upload_date}}</p>
+            {% if object.activity.all %}
+            {% for entry in object.activity.all %}
+            <p><strong>{% trans "log date"|capfirst %}:</strong> {{entry.log_date}}</p>
+            <p><strong>{% trans "total impressions"|capfirst %}:</strong> {{entry.quantity_impressions}}</p>
+            <p><strong>{% trans "total clicks"|capfirst %}:</strong> {{entry.quantity_clicks}}</p>
+            {% endfor %}
+            {% endif %}
+        </li>
+        <li class="list-group-item">
+            {% if object.user == user %}
+                <a class="btn btn-warning" href="{% url 'my-file-delete' object.id %}">{% trans "delete"|capfirst %}</a>
+            {% endif %}
+        </li>
+    </ul>
+</div>
+
+{% endblock %}
