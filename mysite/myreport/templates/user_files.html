@@ -5,20 +5,29 @@
 </div>
 <br>
     {% if files %}
-        <div class="row">
-      <table class="table table-hover table-bordered">
-          <tr>
-              <th>{% trans "File"|capfirst %}</th>
-              <th>{% trans "upload Date"|capfirst %}</th>
-          </tr>
-          {% for file in files %}
-          <tr>
-              <td><a href="{% url 'my-file' file.id %}">{{ file.file_contents.name }}</a></td>
-              <td>{{ file.upload_date }}</td>
-          </tr>
-          {% endfor %}
-      </table>
-        </div>
+</br>
+<div display=block>
+<form action="" method="get" class="mb-2">
+    {{ filter_form.as_p }}
+    <button type="submit" class="btn btn-outline-secondary" style="width:9%;">{% trans "find"|capfirst %}</button>
+    <a type="submit" class="btn btn-outline-secondary" style="width:9%;" href="{% url 'my-files' %}">
+        {% trans "reset"|capfirst %}</a>
+</form>
+</div>
+<div class="row">
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>{% trans "File"|capfirst %}</th>
+            <th>{% trans "upload Date"|capfirst %}</th>
+        </tr>
+        {% for file in files %}
+        <tr>
+            <td><a href="{% url 'my-file' file.id %}">{{ file.file_contents.name }}</a></td>
+            <td>{{ file.upload_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 <div class="container pages">
     <span class="step-links">
         {% if page_obj.has_previous %}

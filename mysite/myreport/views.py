@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
-from .forms import UploadFileForm
+from .forms import UploadFileForm, UploadedFilesByUserListForm
 from .models import DataFile, Activity
 from .utils import hash_file, check_for_upload_form_error, process_load_data
 from django.db.models import Sum
@@ -83,8 +83,20 @@ class UploadedFilesByUserListView(LoginRequiredMixin, generic.ListView):
     template_name = 'user_files.html'
     paginate_by = 50
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['filter_form'] = UploadedFilesByUserListForm(self.request.GET)
+        return context
+
     def get_queryset(self):
-        return DataFile.objects.filter(user=self.request.user)
+        queryset = DataFile.objects.filter(user=self.request.user)
+        if self.request.GET.get('from_'):
+            queryset = queryset.filter(
+                upload_date__gte=self.request.GET.get('from_'))
+        if self.request.GET.get('to'):
+            queryset = queryset.filter(
+                upload_date__lte=self.request.GET.get('to'))
+        return queryset
 
 
 class UserFileDetailView(LoginRequiredMixin, generic.DetailView):

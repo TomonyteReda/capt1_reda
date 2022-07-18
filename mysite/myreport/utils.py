@@ -74,7 +74,7 @@ def hash_file(file, block_size=65536):
     return hasher.hexdigest()
 
 
-def check_for_upload_form_error(request, form, instance, file_name, file_extension):
+def check_for_upload_form_error(request, instance, file_name, file_extension):
     if file_extension not in ['parquet', 'csv', 'xlsx']:
         messages.error(request, _('Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported')
                        .format(str(file_name)))

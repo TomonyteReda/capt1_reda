@@ -28,3 +28,4 @@ class Activity(models.Model):
         verbose_name_plural = 'Activities'
 
 
+
