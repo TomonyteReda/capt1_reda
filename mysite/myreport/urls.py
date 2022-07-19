@@ -9,4 +9,5 @@ urlpatterns = [
     path('myfiles/', views.UploadedFilesByUserListView.as_view(), name='my-files'),
     path('myfiles/<int:pk>/', views.UserFileDetailView.as_view(), name='my-file'),
     path('myfiles/<int:pk>/delete/', views.UserFileDeleteView.as_view(), name='my-file-delete'),
+    path('export-csv', views.export_csv, name='export-csv'),
 ]

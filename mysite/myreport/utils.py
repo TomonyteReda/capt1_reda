@@ -2,11 +2,10 @@ from functools import partial
 import hashlib
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from django.shortcuts import render
-from .models import DataFile
-from datetime import datetime, date
+from .models import DataFile, Activity
+from .forms import ModelReportFilterForm
+from datetime import datetime, date, timedelta
 import pandas as pd
-from .models import Activity
 
 upload_date = date.today()
 upload_date_str = str(upload_date)
@@ -87,7 +86,23 @@ def check_for_upload_form_error(request, instance, file_name, file_extension):
     return status
 
 
-
-
+def get_report_queryset(request):
+    queryset = Activity.objects.filter(user=request.user)
+    if request.method == 'GET':
+        form = ModelReportFilterForm(request.GET)
+        if form.is_valid():
+            data = form.cleaned_data
+            if data['from_']:
+                queryset = queryset.filter(
+                    log_date__gte=data['from_'])
+            if data['to']:
+                queryset = queryset.filter(
+                    log_date__lte=data['to'] + timedelta(days=1))
+            if data['uploaded']:
+                queryset = queryset.filter(
+                    data_file__upload_date=data['uploaded'])
+    else:
+        form = ModelReportFilterForm()
+    return form, queryset
 
 

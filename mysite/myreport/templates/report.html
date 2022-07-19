@@ -2,9 +2,18 @@
 {% load i18n %}
 {% block content %}
   <h1>{% trans "my Activity Report"|capfirst %}</h1>
-<p></p>
+</br>
 <div>
     {% if report %}
+    <div class="form-group">
+        <form action="" method="get" class="form" >
+            {{ filter_form.as_p }}
+            <button type="submit" class="btn btn-outline-secondary" style="width:9%;">
+                {% trans "find"|capfirst %}</button>
+            <a type="submit" class="btn btn-outline-secondary" style="width:9%;" href="{% url 'report' %}">
+                {% trans "reset"|capfirst %}</a>
+        </form>
+    </div>
     <div class="row">
       <table class="table table-hover table-bordered">
           <tr>
@@ -46,6 +55,7 @@
                 {% endif %}
             </nav>
         </div>
+        <a href="{% url 'export-csv' %}" class="btn btn-secondary">Export Full Data</a>
     </div>
     {% else %}
       <p>{% blocktrans %}There is no data to show{% endblocktrans %}</p>

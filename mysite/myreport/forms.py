@@ -17,3 +17,9 @@ class UploadedFilesByUserListForm(forms.Form):
     from_ = forms.DateField(label="Upload Date From", required=False, widget=DateInput())
     to = forms.DateField(label="Upload Date To", required=False, widget=DateInput())
 
+
+class ModelReportFilterForm(forms.Form):
+    from_ = forms.DateField(label="Log Date From", required=False, widget=DateInput())
+    to = forms.DateField(label="Log Date To", required=False, widget=DateInput())
+    uploaded = forms.DateField(label="Upload Date", required=False, widget=DateInput())
+

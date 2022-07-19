@@ -1,5 +1,4 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
@@ -9,10 +8,13 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from .forms import UploadFileForm, UploadedFilesByUserListForm
 from .models import DataFile, Activity
-from .utils import hash_file, check_for_upload_form_error, process_load_data
+from .utils import hash_file, check_for_upload_form_error, process_load_data, get_report_queryset
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy
+from django.http import HttpResponse
+import csv
+
 
 
 def index(request):
@@ -35,7 +37,7 @@ def model_form_upload(request):
             instance.hash_checksum = hash_file(instance.file_contents)
             instance.user = request.user
             file_extension = str(file_name).split('.')[-1]
-            status = check_for_upload_form_error(request, form, instance, file_name, file_extension)
+            status = check_for_upload_form_error(request, instance, file_name, file_extension)
             if status == 'error':
                 return render(request, 'upload_file.html', {
                     'form': form
@@ -55,14 +57,14 @@ def model_form_upload(request):
 
 @login_required
 def model_report(request):
-    query_set = Activity.objects.filter(user=request.user)
-    result = query_set.values('log_date', 'data_file__upload_date')\
+    form, queryset = get_report_queryset(request)
+    result = queryset.values('log_date', 'data_file__upload_date')\
         .order_by('log_date')\
         .annotate(impressions=Sum('quantity_impressions'), clicks=Sum('quantity_clicks'))
-    total_impressions = query_set.aggregate(Sum('quantity_impressions'))['quantity_impressions__sum']
-    total_clicks = query_set.aggregate(Sum('quantity_clicks'))['quantity_clicks__sum']
+    total_impressions = queryset.aggregate(Sum('quantity_impressions'))['quantity_impressions__sum']
+    total_clicks = queryset.aggregate(Sum('quantity_clicks'))['quantity_clicks__sum']
     page = request.GET.get('page')
-    paginator = Paginator(result, 50)
+    paginator = Paginator(result, 10)
     try:
         result = paginator.page(page)
     except PageNotAnInteger:
@@ -70,11 +72,24 @@ def model_report(request):
     except EmptyPage:
         result = paginator.page(paginator.num_pages)
     context = {
+        'filter_form': form,
         'report': result,
         'total_impressions': total_impressions,
-        'total_clicks': total_clicks
+        'total_clicks': total_clicks,
     }
     return render(request, 'report.html', context=context)
+
+
+@login_required
+def export_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=output.csv'
+    writer = csv.writer(response)
+    writer.writerow(['Log Date', 'Impressions', 'Clicks', 'Upload Date'])
+    data_set = Activity.objects.filter(user=request.user)
+    for row in data_set:
+        writer.writerow([row.log_date, row.quantity_impressions, row.quantity_clicks, row.data_file.upload_date])
+    return response
 
 
 class UploadedFilesByUserListView(LoginRequiredMixin, generic.ListView):
