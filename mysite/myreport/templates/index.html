@@ -1,10 +1,25 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
+<head>
+  {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+</br>
   <h1>{% trans "my Activity Report"|capfirst %}</h1>
 <p></p>
 <div>
-  <h3>{% blocktrans %}The site where you can upload your activity data and generate reports{% endblocktrans %}</h3>
-  <p>{% blocktrans %}Today we have {{ num_users}} users using our reporting platform.{% endblocktrans %}</p>
+  <h3>
+    <i>{% blocktrans %}The site where you can upload your activity data and generate reports{% endblocktrans %}</i>
+  </h3>
+</br>
+  <div>
+    <h5><i class="fa fa-users" aria-hidden="true"></i>
+      {% blocktrans %}Today we have <strong>{{ num_users}}</strong> users using our reporting platform.{% endblocktrans %}</h5>
+  </div>
+</br></br></br></br>
+  <div class="container">
+      <img class="img-fluid" src={% static "static_images/myreport.jpg" %} alt="home" >
+  </div>
 </div>
 {% endblock %}

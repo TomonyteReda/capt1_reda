@@ -9,7 +9,7 @@
         <form action="" method="get" class="form" >
             {{ filter_form.as_p }}
             <button type="submit" class="btn btn-outline-secondary" style="width:9%;">
-                {% trans "find"|capfirst %}</button>
+                {% trans "filter"|capfirst %}</button>
             <a type="submit" class="btn btn-outline-secondary" style="width:9%;" href="{% url 'report' %}">
                 {% trans "reset"|capfirst %}</a>
         </form>
@@ -17,13 +17,13 @@
     <div class="row">
       <table class="table table-hover table-bordered">
           <tr>
-              <th>Log Date</th>
-              <th>Impressions</th>
-              <th>Clicks</th>
-              <th>Upload Date</th>
+              <th>{% trans "log Date"|capfirst %}</th>
+              <th>{% trans "impressions"|capfirst %}</th>
+              <th>{% trans "clicks"|capfirst %}</th>
+              <th>{% trans "upload Date"|capfirst %}</th>
           </tr>
           <tr>
-              <th>Total</th>
+              <th>{% trans "total"|capfirst %}</th>
               <th>{{ total_impressions }}</th>
               <th>{{ total_clicks }}</th>
               <th></th>
@@ -55,7 +55,7 @@
                 {% endif %}
             </nav>
         </div>
-        <a href="{% url 'export-csv' %}" class="btn btn-secondary">Export Full Data</a>
+        <a href="{% url 'export-csv' %}" class="btn btn-secondary">{% blocktrans %}Export Full Data{% endblocktrans %}</a>
     </div>
     {% else %}
       <p>{% blocktrans %}There is no data to show{% endblocktrans %}</p>

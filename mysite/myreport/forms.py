@@ -1,5 +1,6 @@
 from django import forms
 from .models import DataFile
+from django.utils.translation import gettext_lazy as _
 
 
 class UploadFileForm(forms.ModelForm):
@@ -14,12 +15,12 @@ class DateInput(forms.DateInput):
 
 
 class UploadedFilesByUserListForm(forms.Form):
-    from_ = forms.DateField(label="Upload Date From", required=False, widget=DateInput())
-    to = forms.DateField(label="Upload Date To", required=False, widget=DateInput())
+    from_ = forms.DateField(label=_("Upload Date From"), required=False, widget=DateInput())
+    to = forms.DateField(label=_("Upload Date To"), required=False, widget=DateInput())
 
 
 class ModelReportFilterForm(forms.Form):
-    from_ = forms.DateField(label="Log Date From", required=False, widget=DateInput())
-    to = forms.DateField(label="Log Date To", required=False, widget=DateInput())
-    uploaded = forms.DateField(label="Upload Date", required=False, widget=DateInput())
+    from_ = forms.DateField(label=_("Log Date From"), required=False, widget=DateInput())
+    to = forms.DateField(label=_("Log Date To"), required=False, widget=DateInput())
+    uploaded = forms.DateField(label=_("Upload Date"), required=False, widget=DateInput())
 

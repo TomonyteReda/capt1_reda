@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-11 20:46+0300\n"
+"POT-Creation-Date: 2022-07-19 21:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,35 @@ msgstr ""
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
 
+#: .\myreport\forms.py:18
+msgid "Upload Date From"
+msgstr "Įkėlimo data nuo"
+
+#: .\myreport\forms.py:19
+msgid "Upload Date To"
+msgstr "Įkėlimo data iki"
+
+#: .\myreport\forms.py:23
+msgid "Log Date From"
+msgstr "Įvykiai registruoti nuo"
+
+#: .\myreport\forms.py:24
+msgid "Log Date To"
+msgstr "Įvykiai registruoti iki"
+
+#: .\myreport\forms.py:25
+msgid "upload file"
+msgstr "įkelti duomenų failą"
+
+#: .\myreport\models.py:28
+#| msgid "Activities"
+msgid "Activity"
+msgstr "Įvykiai"
+
+#: .\myreport\models.py:29
+msgid "Activities"
+msgstr "Įvykiai"
+
 #: .\myreport\templates\base.html:5
 msgid "my report"
 msgstr "mano ataskaita"
@@ -27,32 +56,32 @@ msgstr "mano ataskaita"
 msgid "home"
 msgstr "pradžia"
 
-#: .\myreport\templates\base.html:25
-msgid "upload file"
-msgstr "įkelti duomenų failą"
-
 #: .\myreport\templates\base.html:26
 msgid "show report"
 msgstr "rodyti ataskaitą"
 
 #: .\myreport\templates\base.html:27
+msgid "my files"
+msgstr "mano failai"
+
+#: .\myreport\templates\base.html:28
 msgid "profile"
 msgstr "profilis"
 
-#: .\myreport\templates\base.html:28
+#: .\myreport\templates\base.html:29
 msgid "logout"
 msgstr "atsijungti"
 
-#: .\myreport\templates\base.html:30 .\myreport\templates\register.html:28
+#: .\myreport\templates\base.html:31 .\myreport\templates\register.html:28
 #: .\myreport\templates\registration\logged_out.html:5
 msgid "login"
 msgstr "prisijungti"
 
-#: .\myreport\templates\base.html:31
+#: .\myreport\templates\base.html:32
 msgid "sign up"
 msgstr "registruotis"
 
-#: .\myreport\templates\base.html:34
+#: .\myreport\templates\base.html:35
 msgid "admin"
 msgstr "admin"
 
@@ -128,7 +157,39 @@ msgstr "vartotojas"
 msgid "forgot your password?"
 msgstr "pamiršote slaptažodį?"
 
-#: .\myreport\templates\report.html:51
+#: .\myreport\templates\report.html:12 .\myreport\templates\user_files.html:12
+msgid "filter"
+msgstr "filtruoti"
+
+#: .\myreport\templates\report.html:14 .\myreport\templates\user_files.html:14
+msgid "reset"
+msgstr "atstatyti"
+
+#: .\myreport\templates\report.html:20
+msgid "log Date"
+msgstr "Įvykių registravimo data"
+
+#: .\myreport\templates\report.html:21
+msgid "impressions"
+msgstr "įvykiai (impressions)"
+
+#: .\myreport\templates\report.html:22
+msgid "clicks"
+msgstr "įvykiai (clicks)"
+
+#: .\myreport\templates\report.html:23 .\myreport\templates\user_files.html:21
+msgid "upload Date"
+msgstr "Įkėlimo data"
+
+#: .\myreport\templates\report.html:26
+msgid "total"
+msgstr "iš viso"
+
+#: .\myreport\templates\report.html:58
+msgid "Export Full Data"
+msgstr "Eksportuoti visus duomenis"
+
+#: .\myreport\templates\report.html:61
 msgid "There is no data to show"
 msgstr "Nėra duomenų. Norėdami matyti duomenis, įkelkite failą"
 
@@ -141,42 +202,106 @@ msgstr "Įkelti vartotojo %(user)s failą"
 msgid "Files accepted ony in *.parquet, *.csv, *.xlsx formats"
 msgstr "Failai priimami tik *.parquet, *.csv, *.xlsx formatais"
 
-#: .\myreport\templates\upload_file.html:10
-msgid "upload"
-msgstr "įkelti"
-
 #: .\myreport\templates\upload_file.html:13
 msgid "return to home page"
 msgstr "grįžti į pagrindinį puslapį"
 
-#: .\myreport\views.py:44
-#| msgid "Files accepted ony in *.parquet, *.csv, *.xlsx formats"
-msgid ""
-"Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported"
-msgstr "Neteisingas failo formatas. Failai priimami tik *.parquet, *.csv, *.xlsx formatais"
+#: .\myreport\templates\user_file.html:7
+msgid "file"
+msgstr "failas"
 
-#: .\myreport\views.py:50
-#| msgid "file {} is already uploaded"
-msgid "File {} is already uploaded"
-msgstr "failas {} yra jau įkeltas"
+#: .\myreport\templates\user_file.html:8
+msgid "upload"
+msgstr "įkelti"
 
-#: .\myreport\views.py:60
-#| msgid "file {} uploaded successfully!"
+#: .\myreport\templates\user_file.html:12
+msgid "log date"
+msgstr "įvykių registravimo data"
+
+#: .\myreport\templates\user_file.html:13
+msgid "total impressions"
+msgstr "iš viso įvykių (impressions)"
+
+#: .\myreport\templates\user_file.html:14
+msgid "total clicks"
+msgstr "iš viso įvykių (clicks)"
+
+#: .\myreport\templates\user_file.html:20
+#: .\myreport\templates\user_file_delete.html:13
+msgid "delete"
+msgstr "ištrinti"
+
+#: .\myreport\templates\user_file_delete.html:6
+msgid "delete file"
+msgstr "ištrinti failą"
+
+#: .\myreport\templates\user_file_delete.html:9
+msgid "do you really want to delete this file?"
+msgstr "ar tikrai norite ištrinti šį failą?"
+
+#: .\myreport\templates\user_file_delete.html:14
+msgid "keep the file"
+msgstr "atšaukti"
+
+#: .\myreport\templates\user_files.html:4
+#, python-format
+#| msgid "Upload file for user %(user)s"
+msgid "Files uploaded by user %(user)s"
+msgstr "Įkelti vartotojo %(user)s failą"
+
+#: .\myreport\templates\user_files.html:20
+msgid "File"
+msgstr "Failas"
+
+#: .\myreport\templates\user_files.html:34
+msgid "first"
+msgstr "pirmas"
+
+#: .\myreport\templates\user_files.html:39
+msgid "from"
+msgstr "iš"
+
+#: .\myreport\templates\user_files.html:43
+msgid "next"
+msgstr "kitas"
+
+#: .\myreport\templates\user_files.html:44
+msgid "last"
+msgstr "paskutinis"
+
+#: .\myreport\templates\user_files.html:49
+#, python-format
+#| msgid "Upload file for user %(user)s"
+msgid "No files are uploaded for user %(user)s"
+msgstr "Įkelti vartotojo %(user)s failą"
+
+#: .\myreport\utils.py:66
 msgid "File {} uploaded successfully!"
 msgstr "failas {} įkeltas sėkmingai!"
 
-#: .\myreport\views.py:104
+#: .\myreport\utils.py:78
+msgid ""
+"Incorrect file format. Only *.parquet, *.csv, *.xlsx formats are supported"
+msgstr ""
+"Neteisingas failo formatas. Failai priimami tik *.parquet, *.csv, *.xlsx "
+"formatais"
+
+#: .\myreport\utils.py:82
+msgid "File {} is already uploaded"
+msgstr "failas {} yra jau įkeltas"
+
+#: .\myreport\views.py:144
 msgid "passwords do not match"
 msgstr "slaptažodis nesutampa"
 
-#: .\myreport\views.py:107
+#: .\myreport\views.py:147
 msgid "user {} already registered"
 msgstr "vartotojas {} jau užregistruotas"
 
-#: .\myreport\views.py:110
+#: .\myreport\views.py:150
 msgid "email {} already exists"
 msgstr "vartotojas šiuo el. paštu {} jau užregistruotas"
 
-#: .\myreport\views.py:116
+#: .\myreport\views.py:156
 msgid "user {} registered successfully"
 msgstr "vartotojas {} užregistruotas sėkmingai"

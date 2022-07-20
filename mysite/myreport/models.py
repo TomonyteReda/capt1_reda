@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 
 class DataFile(models.Model):
@@ -24,8 +25,8 @@ class Activity(models.Model):
                f'{self.log_date} {self.quantity_impressions} {self.quantity_clicks} by user {self.user}'
 
     class Meta:
-        verbose_name = 'Activity'
-        verbose_name_plural = 'Activities'
+        verbose_name = _('Activity')
+        verbose_name_plural = _('Activities')
 
 
 
