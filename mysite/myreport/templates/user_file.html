@@ -5,7 +5,7 @@
     <ul class="list-group">
         <li class="list-group-item">
             <p><strong>{% trans "file"|capfirst %}:</strong> {{ object.file_contents.name }}</p>
-            <p><strong>{% trans "uploaded by"|capfirst %}:</strong> {{object.user}}</p>
+            <p><strong>{% trans "user"|capfirst %}:</strong> {{object.user}}</p>
             <p><strong>{% trans "upload date"|capfirst %}:</strong> {{object.upload_date}}</p>
             {% if object.activity.all %}
             {% for entry in object.activity.all %}
